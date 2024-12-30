@@ -1,118 +1,176 @@
 import pygame
 
+
+
 # Инициализация Pygame
+
 pygame.init()
 
+
+
 # Задаем размеры окна
-screen_width = 1024
+
+screen_width =1024
+
 screen_height = 1024
 
+
 # Создаем окно
+
 screen = pygame.display.set_mode((screen_width, screen_height))
+
 pygame.display.set_caption("Простой экран с Pygame")
 
-#Шаг 1 - загрузка изображения
+
+
+# Загрузка изображений
+
 labirint = pygame.image.load("Картинки_для_лабиринта/начальная_картинка_лабиринта.png")
 
-#Шаг 1 - загрузка будущей кнопки
+
+
 button_play = pygame.image.load("Картинки_для_лабиринта/button_play.png")
+
 button_exit = pygame.image.load("Картинки_для_лабиринта/button_exit.png")
 
+
+
 labirint_MY = pygame.image.load("Картинки_для_лабиринта/labirint_MY.png")
+
 labirint_MY = pygame.transform.scale(labirint_MY, (1024, 1024))
 
+
+
+# Создаем маску лабиринта
+
+mask = pygame.mask.from_threshold(labirint_MY, (0, 0, 0), (1, 1, 1))
+
+
+
+# Персонаж
+
 person_game1 = pygame.image.load("bat_costuims/bat-a.png")
+
 person_game1 = pygame.transform.scale(person_game1, (60, 40))
-person_game2 = pygame.image.load("bat_costuims/bat-b.png")
-person_game3 = pygame.image.load("bat_costuims/bat-c.png")
-person_game4 = pygame.image.load("bat_costuims/bat-d.png")
 
 
 
-player_width = 10
-player_height = 10
+player_width = 60
 
-person_game1_x = 945
-person_game1_y = 950
+player_height = 40
 
-#Шаг 2 - создаю прямоугольник с координатами и размерами
-button_play_rect = pygame.Rect(470, 450, 350, 350)
+
+
+person_game1_x = 109
+
+person_game1_y = 250
+
+
+
+# Кнопка
+
+button_play_rect = pygame.Rect(475, 455, 100, 50)
+
+
 
 # Основные цвета
+
 WHITE = (255, 255, 255)
+
 BLACK = (0, 0, 0)
 
-numbers_of_screen = 1  #переменная для изменения виджетов между собой
 
-b = 0
-a = 1
 
-# Основной цикл программы
-while a != b:
-    #цикл while - проверяет ДЕЙСТВИЯ
-    last_update_time = pygame.time.get_ticks()
-    #print(last_update_time)
-    for event in pygame.event.get():  # Правильный вызов
-        #цикл FOR - проверет События
+# Переменные
 
-        #print(event)
-        if event.type == pygame.QUIT:
-            b = 1
-        elif event.type == pygame.MOUSEBUTTONDOWN and numbers_of_screen == 1:
-            x = event.pos[0]
-            y = event.pos[1]
-            if 470 <= x <= 570 and 450 <= y <= 550:
-                numbers_of_screen = 2
+numbers_of_screen = 1 # Для переключения между экранами
 
-            print(event.pos)  #обратились к параметру pos у события  MOUSEBUTTONDOWN
-            print("Вы нажали на кнопку", numbers_of_screen)
+running = True
 
 
 
-        elif event.type == pygame.KEYDOWN and numbers_of_screen == 2:  #если event заметил событие (нажатие клавиатуры)и это экран 2 значит выполнять следующее действие
-            print(event.key, "Вы нажали клавишу!")
-            if event.key == 1073741906:  #обратились к параметру key у кнопки
-                print("вы нажали стрелку вверх!")
-                person_game1_y -= 10
-            elif event.key == 1073741905:
-                person_game1_y += 10
-            elif event.key == 1073741904:
-                person_game1_x -= 10
-            elif event.key == 1073741903:
-                for x in range (person_game1_x,person_game1_x + player_width):
-                  for y in range (person_game1_y,person_game1_y + player_height):
+# Основной игровой цикл
 
-                    print(x,y)
-                    if labirint_array [x,y] == labirint_MY.map_rgb((0,0,0)):
-                        print("я не могу пройти")
-                        print(False)
-                        break
+while running:
 
-                person_game1_x += 10
+  for event in pygame.event.get():
+
+    if event.type == pygame.QUIT:
+
+      running = False
+
+    elif event.type == pygame.MOUSEBUTTONDOWN and numbers_of_screen == 1:
+
+      x, y = event.pos
+
+      if button_play_rect.collidepoint(x, y):
+
+        numbers_of_screen = 2
+
+    elif event.type == pygame.KEYDOWN and numbers_of_screen == 2:
+
+      # Обновляем координаты персонажа
+
+      new_x, new_y = person_game1_x, person_game1_y
 
 
-    # Заливка экрана белым цветом
-    screen.fill(WHITE)
 
-    if numbers_of_screen == 1:  #запускаем виджеты первого фрейма если numbers_of_screen ==1
-        # Шаг 2 - размещение изображения на экране
-        screen.blit(labirint, (0, 0))  #
+      if event.key == pygame.K_UP:
 
-        # Шаг 3 - размещаю картинку в созданном прямоугольнике
-        screen.blit(button_play, button_play_rect.topleft)
+        new_y -= 10
 
-    elif numbers_of_screen == 2:
-        labirint_array = pygame.PixelArray(labirint_MY)
-        #if labirint_array[255,531] == labirint_MY.map_rgb((255,255,255)):#проверяем пиксель определённой координаты на белый цвет
-          #print("Белый УРА!")
-        labirint_array.close()
+      elif event.key == pygame.K_DOWN:
 
-        screen.blit(labirint_MY, (0, 0))
+        new_y += 10
 
-        screen.blit(person_game1, (person_game1_x, person_game1_y))
+      elif event.key == pygame.K_LEFT:
 
-    # Обновление экрана
-    pygame.display.flip()
+        new_x -= 10
 
-# Завершение работы Pygame
-pygame.quit()
+      elif event.key == pygame.K_RIGHT:
+
+        new_x += 10
+
+
+
+      # Проверяем столкновение с чёрными пикселями
+
+      if mask.overlap_area(pygame.mask.Mask((player_width, player_height), True), (new_x, new_y)):
+
+        print("Персонаж не может пройти, стена!")
+
+      else:
+
+        person_game1_x, person_game1_y = new_x, new_y
+
+
+
+  # Заливка экрана
+
+  screen.fill(WHITE)
+
+
+
+  if numbers_of_screen == 1: # Экран с кнопкой
+
+    screen.blit(labirint, (0, 0))
+
+    pygame.draw.rect(screen, (200, 200, 200), button_play_rect)
+
+    screen.blit(button_play, button_play_rect.topleft)
+
+  elif numbers_of_screen == 2: # Лабиринт
+
+    screen.blit(labirint_MY, (0, 0))
+
+    screen.blit(person_game1, (person_game1_x, person_game1_y))
+
+
+
+  # Обновляем экран
+
+  pygame.display.flip()
+
+
+
+# Завершаем Pygame
