@@ -40,11 +40,17 @@ labirint_MY = pygame.image.load("Картинки_для_лабиринта/labi
 labirint_MY = pygame.transform.scale(labirint_MY, (1024, 1024))
 
 
+player_width = 60
+
+player_height = 40
+
+
 
 # Создаем маску лабиринта
 
 mask = pygame.mask.from_threshold(labirint_MY, (0, 0, 0), (1, 1, 1))
 
+person_mask = pygame.mask.Mask((player_width,player_height),True)
 
 
 # Персонаж
@@ -52,12 +58,6 @@ mask = pygame.mask.from_threshold(labirint_MY, (0, 0, 0), (1, 1, 1))
 person_game1 = pygame.image.load("bat_costuims/bat-a.png")
 
 person_game1 = pygame.transform.scale(person_game1, (60, 40))
-
-
-
-player_width = 60
-
-player_height = 40
 
 
 
@@ -86,7 +86,6 @@ BLACK = (0, 0, 0)
 numbers_of_screen = 1 # Для переключения между экранами
 
 running = True
-
 
 
 # Основной игровой цикл
@@ -131,18 +130,15 @@ while running:
 
         new_x += 10
 
+      # Проверяем столкновение с чёрными пикселями
+
+      if mask.overlap (person_mask,(new_x,new_y)):
+        print( "Персонаж не может пройти,стена")
+      else:
+        person_game1_x,person_game1_y = new_x,new_y
 
 
       # Проверяем столкновение с чёрными пикселями
-
-      if mask.overlap_area(pygame.mask.Mask((player_width, player_height), True), (new_x, new_y)):
-
-        print("Персонаж не может пройти, стена!")
-
-      else:
-
-        person_game1_x, person_game1_y = new_x, new_y
-
 
 
   # Заливка экрана
