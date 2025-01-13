@@ -87,13 +87,16 @@ numbers_of_screen = 1 # Для переключения между экрана�
 
 running = True
 
-move_right = False
+move_right = move_left = move_up = move_down = False
 
 
 # Основной игровой цикл
 
 while running:
   # начало цикла for
+
+
+
   for event in pygame.event.get():
 
     if event.type == pygame.QUIT:
@@ -117,31 +120,37 @@ while running:
 
 
         if event.key == pygame.K_UP:
-          new_y -= 10
+          move_up = True
 
         elif event.key == pygame.K_DOWN:
-          new_y += 10
+          move_down = True
 
         elif event.key == pygame.K_LEFT:
 
-          new_x -= 10
+          move_left = True
 
         elif event.key == pygame.K_RIGHT:
           move_right = True
 
       # Проверяем столкновение с чёрными пикселями
 
-      if mask.overlap (person_mask,(new_x,new_y)):#с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
-        print( "Персонаж не может пройти,стена")
-      else:
-        person_game1_x,person_game1_y = new_x,new_y
+          if mask.overlap (person_mask,(new_x,new_y)):#с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
+            print( "Персонаж не может пройти,стена")
+          else:
+            person_game1_x,person_game1_y = new_x,new_y
 
-      # конец цикла for
-      # Проверяем столкновение с чёрными пикселями
 
     elif event.type == pygame.KEYUP and numbers_of_screen == 2:
       if event.key == pygame.K_RIGHT:
             move_right = False
+
+    # конец цикла for
+    # Проверяем столкновение с чёрными пикселями
+
+  #код для цикла while
+  if move_right == True:
+    new_x += 5
+  #elif move_left == True:
 
   # Заливка экрана
 
