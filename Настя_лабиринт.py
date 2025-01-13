@@ -110,23 +110,24 @@ while running:
 
     elif event.type == pygame.KEYDOWN and numbers_of_screen == 2:
 
-      # Обновляем координаты персонажа
 
-      new_x, new_y = person_game1_x, person_game1_y
+        # Обновляем координаты персонажа
+
+        new_x, new_y = person_game1_x, person_game1_y
 
 
-      if event.key == pygame.K_UP:
-        new_y -= 10
+        if event.key == pygame.K_UP:
+          new_y -= 10
 
-      elif event.key == pygame.K_DOWN:
-        new_y += 10
+        elif event.key == pygame.K_DOWN:
+          new_y += 10
 
-      elif event.key == pygame.K_LEFT:
+        elif event.key == pygame.K_LEFT:
 
-        new_x -= 10
+          new_x -= 10
 
-      elif event.key == pygame.K_RIGHT:
-        move_right = True
+        elif event.key == pygame.K_RIGHT:
+          move_right = True
 
       # Проверяем столкновение с чёрными пикселями
 
@@ -138,8 +139,9 @@ while running:
       # конец цикла for
       # Проверяем столкновение с чёрными пикселями
 
-  if move_right == True:
-    new_x += 5
+    elif event.type == pygame.KEYUP and numbers_of_screen == 2:
+      if event.key == pygame.K_RIGHT:
+            move_right = False
 
   # Заливка экрана
 
