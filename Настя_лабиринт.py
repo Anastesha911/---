@@ -134,15 +134,11 @@ while running:
 
       # Проверяем столкновение с чёрными пикселями
 
-          if mask.overlap (person_mask,(new_x,new_y)):#с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
-            print( "Персонаж не может пройти,стена")
-          else:
-            person_game1_x,person_game1_y = new_x,new_y
-
 
     elif event.type == pygame.KEYUP and numbers_of_screen == 2:
       if event.key == pygame.K_RIGHT:
             move_right = False
+
 
     # конец цикла for
     # Проверяем столкновение с чёрными пикселями
@@ -151,6 +147,11 @@ while running:
   if move_right == True:
     new_x += 5
   #elif move_left == True:
+
+  if mask.overlap(person_mask, (new_x, new_y)):  # с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
+      print("Персонаж не может пройти,стена")
+  else:
+      person_game1_x, person_game1_y = new_x, new_y
 
   # Заливка экрана
 
