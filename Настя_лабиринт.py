@@ -40,9 +40,9 @@ labirint_MY = pygame.image.load("Картинки_для_лабиринта/labi
 labirint_MY = pygame.transform.scale(labirint_MY, (1024, 1024))
 
 
-player_width = 60
+player_width = 40
 
-player_height = 40
+player_height = 20
 
 
 
@@ -57,13 +57,13 @@ person_mask = pygame.mask.Mask((player_width,player_height),True)
 
 person_game1 = pygame.image.load("bat_costuims/bat-a.png")
 
-person_game1 = pygame.transform.scale(person_game1, (60, 40))
+person_game1 = pygame.transform.scale(person_game1, (40, 20))
 
 
 
 person_game1_x = 109
 
-person_game1_y = 250
+person_game1_y = 210
 
 
 
@@ -89,6 +89,8 @@ running = True
 
 move_right = move_left = move_up = move_down = False
 
+
+new_x, new_y = person_game1_x, person_game1_y
 
 # Основной игровой цикл
 
@@ -116,8 +118,6 @@ while running:
 
         # Обновляем координаты персонажа
 
-        new_x, new_y = person_game1_x, person_game1_y
-
 
         if event.key == pygame.K_UP:
           move_up = True
@@ -136,20 +136,40 @@ while running:
 
 
     elif event.type == pygame.KEYUP and numbers_of_screen == 2:
-      if event.key == pygame.K_RIGHT:
+        if event.key == pygame.K_RIGHT:
             move_right = False
+        elif event.key == pygame.K_LEFT:
+            move_left = False
+        elif event.key == pygame.K_UP:
+            move_up = False
+        elif event.key == pygame.KEYDOWN:
+            move_down = False
+
 
 
     # конец цикла for
     # Проверяем столкновение с чёрными пикселями
 
   #код для цикла while
-  if move_right == True:
-    new_x += 5
-  #elif move_left == True:
+  if move_right:
+      new_x += 1
+  elif move_left :
+      new_x -= 1
+  elif move_up:
+      new_y -= 1
+  elif move_down:
+      new_y += 1
 
   if mask.overlap(person_mask, (new_x, new_y)):  # с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
-      print("Персонаж не может пройти,стена")
+      if move_right:
+          new_x -= 1
+      elif move_left:
+          new_x += 1
+      elif move_up:
+          new_y += 1
+      elif move_down:
+          new_y -= 1
+
   else:
       person_game1_x, person_game1_y = new_x, new_y
 
