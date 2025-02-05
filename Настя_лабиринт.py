@@ -17,7 +17,7 @@ screen_height = 1024
 
 # Создаем окно
 
-screen = pygame.display.set_mode((screen_width, screen_height))
+screen = pygame.display.set_mode((screen_width, screen_height))#размеры экрана поместили в кортеже - tuple
 
 pygame.display.set_caption("Простой экран с Pygame")
 
@@ -33,16 +33,16 @@ button_play = pygame.image.load("Картинки_для_лабиринта/butt
 
 button_exit = pygame.image.load("Картинки_для_лабиринта/button_exit.png")
 
-
+labirint_level2 = pygame.image.load("Картинки_для_лабиринта/хогварц.png")
 
 labirint_MY = pygame.image.load("Картинки_для_лабиринта/labirint_MY.png")
 
-labirint_MY = pygame.transform.scale(labirint_MY, (1024, 1024))
+labirint_MY = pygame.transform.scale(labirint_MY, (screen_width, screen_height-12))#команда pygame.transform.scale - отвечает за изменение размеров картинки
 
 
-player_width = 40
+player_width = 50
 
-player_height = 20
+player_height = 30
 
 
 
@@ -57,16 +57,16 @@ person_mask = pygame.mask.Mask((player_width,player_height),True)
 
 person_game1 = pygame.image.load("bat_costuims/bat-a.png")
 
-person_game1 = pygame.transform.scale(person_game1, (40, 20))
+person_game1 = pygame.transform.scale(person_game1, (player_width, player_height))
 
 
 
-person_game1_x = 109
+person_game1_x = 519
 
-person_game1_y = 210
+person_game1_y = 995
 
 
-
+health = 3
 # Кнопка
 
 button_play_rect = pygame.Rect(475, 455, 100, 50)
@@ -108,7 +108,6 @@ while running:
     elif event.type == pygame.MOUSEBUTTONDOWN and numbers_of_screen == 1:
 
       x, y = event.pos
-
       # collidepoint - автоматически синхронизируется с прямоугольником и кликом мыши для кнопки для установления промежуточного пространства для смены экранов
       if button_play_rect.collidepoint(x, y):
         numbers_of_screen = 2
@@ -142,36 +141,47 @@ while running:
             move_left = False
         elif event.key == pygame.K_UP:
             move_up = False
-        elif event.key == pygame.KEYDOWN:
+        elif event.key == pygame.K_DOWN:
             move_down = False
 
 
-
     # конец цикла for
-    # Проверяем столкновение с чёрными пикселями
 
+    # Проверяем столкновение с чёрными пикселями
+    if numbers_of_screen == 2 and person_game1_x < 455 and person_game1_y < 10:
+        numbers_of_screen = 3
   #код для цикла while
+
   if move_right:
-      new_x += 1
+      new_x += 5
   elif move_left :
-      new_x -= 1
+      new_x -= 5
   elif move_up:
-      new_y -= 1
+      new_y -= 5
   elif move_down:
-      new_y += 1
+      new_y += 5
 
   if mask.overlap(person_mask, (new_x, new_y)):  # с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
       if move_right:
-          new_x -= 1
+          new_x -= 3
       elif move_left:
-          new_x += 1
+          new_x += 3
       elif move_up:
-          new_y += 1
+          new_y += 3
       elif move_down:
-          new_y -= 1
+          new_y -= 3
+      health -= 1
+      new_x = person_game1_x
+      new_y = person_game1_y
+      print ("Минус сердечко! Осталось",health,"сердце")
 
+  elif numbers_of_screen == 2 and person_game1_x < 450 and person_game1_y < 10:
+        numbers_of_screen = 3
   else:
       person_game1_x, person_game1_y = new_x, new_y
+      print(person_game1_x,person_game1_y)
+      if person_game1_x < 450  and  person_game1_y < 10:
+          print("Вы прошли!!!")
 
   # Заливка экрана
 
@@ -192,7 +202,8 @@ while running:
     screen.blit(labirint_MY, (0, 0))
 
     screen.blit(person_game1, (person_game1_x, person_game1_y))
-
+  elif numbers_of_screen == 3:
+    screen.blit(labirint_level2,(0,0))
 
 
   # Обновляем экран
