@@ -1,3 +1,4 @@
+
 import pygame
 
 
@@ -44,7 +45,8 @@ player_width = 50
 
 player_height = 30
 
-
+player_width2 = 70
+player_height2 = 100
 
 # Создаем маску лабиринта
 
@@ -59,8 +61,17 @@ person_game1 = pygame.image.load("bat_costuims/bat-a.png")
 
 person_game1 = pygame.transform.scale(person_game1, (player_width, player_height))
 
+person_game2 = pygame.image.load("bat_costuims/dragon-a.png")
 
+person_game2 = pygame.transform.scale(person_game2,(player_width2,player_height))
 
+person_game3 = pygame.image.load("bat_costuims/dragon-b.png")
+
+person_game3 = pygame.transform.scale(person_game2,(player_width2,player_height2))
+
+person_game4 = pygame.image.load("bat_costuims/dragon-c.png")
+
+person_game4 = pygame.transform.scale(person_game4,(player_width2,player_height2))
 person_game1_x = 519
 
 person_game1_y = 995
@@ -94,122 +105,92 @@ new_x, new_y = person_game1_x, person_game1_y
 
 # Основной игровой цикл
 
+# Основной игровой цикл
 while running:
-  # начало цикла for
+    # Обработка событий
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        elif event.type == pygame.MOUSEBUTTONDOWN and numbers_of_screen == 1:
+            if button_play_rect.collidepoint(event.pos):
+                numbers_of_screen = 2
+
+        elif numbers_of_screen == 2:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    move_up = True
+                elif event.key == pygame.K_DOWN:
+                    move_down = True
+                elif event.key == pygame.K_LEFT:
+                    move_left = True
+                elif event.key == pygame.K_RIGHT:
+                    move_right = True
+
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    move_right = False
+                elif event.key == pygame.K_LEFT:
+                    move_left = False
+                elif event.key == pygame.K_UP:
+                    move_up = False
+                elif event.key == pygame.K_DOWN:
+                    move_down = False
+                #конец цикла for
+
+    # Движение персонажа
+    if numbers_of_screen == 2:
+        if move_right:
+            new_x += 5
+        elif move_left:
+            new_x -= 5
+        elif move_up:
+            new_y -= 5
+        elif move_down:
+            new_y += 5
+
+        # Проверка столкновения с лабиринтом
+        if mask.overlap(person_mask, (new_x, new_y)):
+            if move_right:
+                new_x -= 3
+            elif move_left:
+                new_x += 3
+            elif move_up:
+                new_y += 3
+            elif move_down:
+                new_y -= 3
+
+            health -= 1
+            new_x, new_y = person_game1_x, person_game1_y
+            print("Минус сердечко! Осталось", health, "сердце")
+
+        else:
+            person_game1_x, person_game1_y = new_x, new_y
+            print(person_game1_x, person_game1_y)
 
 
 
-  for event in pygame.event.get():
+    # Отрисовка экрана
+    screen.fill(WHITE)
 
-    if event.type == pygame.QUIT:
+    if numbers_of_screen == 1:  # Экран с кнопкой
+        screen.blit(labirint, (0, 0))
+        pygame.draw.rect(screen, (200, 200, 200), button_play_rect)
+        screen.blit(button_play, button_play_rect.topleft)
 
-      running = False
+    elif numbers_of_screen == 2:  # Лабиринт
+        screen.blit(labirint_MY, (0, 0))
+        screen.blit(person_game1, (person_game1_x, person_game1_y))
 
-    elif event.type == pygame.MOUSEBUTTONDOWN and numbers_of_screen == 1:
+        # Проверка выхода из лабиринта
+        if person_game1_x < 450 and person_game1_y < 10 and numbers_of_screen == 2:
+            numbers_of_screen = 3
+            print("Вы прошли!!!")
 
-      x, y = event.pos
-      # collidepoint - автоматически синхронизируется с прямоугольником и кликом мыши для кнопки для установления промежуточного пространства для смены экранов
-      if button_play_rect.collidepoint(x, y):
-        numbers_of_screen = 2
-
-    elif event.type == pygame.KEYDOWN and numbers_of_screen == 2:
-
-
-        # Обновляем координаты персонажа
-
-
-        if event.key == pygame.K_UP:
-          move_up = True
-
-        elif event.key == pygame.K_DOWN:
-          move_down = True
-
-        elif event.key == pygame.K_LEFT:
-
-          move_left = True
-
-        elif event.key == pygame.K_RIGHT:
-          move_right = True
-
-      # Проверяем столкновение с чёрными пикселями
-
-
-    elif event.type == pygame.KEYUP and numbers_of_screen == 2:
-        if event.key == pygame.K_RIGHT:
-            move_right = False
-        elif event.key == pygame.K_LEFT:
-            move_left = False
-        elif event.key == pygame.K_UP:
-            move_up = False
-        elif event.key == pygame.K_DOWN:
-            move_down = False
-
-
-    # конец цикла for
-
-    # Проверяем столкновение с чёрными пикселями
-    if numbers_of_screen == 2 and person_game1_x < 455 and person_game1_y < 10:
-        numbers_of_screen = 3
-  #код для цикла while
-
-  if move_right:
-      new_x += 5
-  elif move_left :
-      new_x -= 5
-  elif move_up:
-      new_y -= 5
-  elif move_down:
-      new_y += 5
-
-  if mask.overlap(person_mask, (new_x, new_y)):  # с помощью команды overlap проверяются текущие координаты в person_mask и будущие new_x new_y
-      if move_right:
-          new_x -= 3
-      elif move_left:
-          new_x += 3
-      elif move_up:
-          new_y += 3
-      elif move_down:
-          new_y -= 3
-      health -= 1
-      new_x = person_game1_x
-      new_y = person_game1_y
-      print ("Минус сердечко! Осталось",health,"сердце")
-
-  elif numbers_of_screen == 2 and person_game1_x < 450 and person_game1_y < 10:
-        numbers_of_screen = 3
-  else:
-      person_game1_x, person_game1_y = new_x, new_y
-      print(person_game1_x,person_game1_y)
-      if person_game1_x < 450  and  person_game1_y < 10:
-          print("Вы прошли!!!")
-
-  # Заливка экрана
-
-  screen.fill(WHITE)
-
-
-
-  if numbers_of_screen == 1: # Экран с кнопкой
-
-    screen.blit(labirint, (0, 0))
-
-    pygame.draw.rect(screen, (200, 200, 200), button_play_rect)
-
-    screen.blit(button_play, button_play_rect.topleft)
-
-  elif numbers_of_screen == 2: # Лабиринт
-
-    screen.blit(labirint_MY, (0, 0))
-
-    screen.blit(person_game1, (person_game1_x, person_game1_y))
-  elif numbers_of_screen == 3:
-    screen.blit(labirint_level2,(0,0))
-
-
-  # Обновляем экран
-
-  pygame.display.flip()
-
-
+    elif numbers_of_screen == 3:
+        screen.blit(labirint_level2, (0, 0))
+        screen.blit(person_game2,(500, 900))
+    pygame.display.flip()
 
 # Завершаем Pygame
+pygame.quit()# Завершаем Pygame
