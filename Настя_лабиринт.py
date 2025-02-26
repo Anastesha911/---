@@ -7,7 +7,8 @@ import pygame
 
 pygame.init()
 
-
+#clock = pygame.time.Clock()
+#print(clock)
 
 # Задаем размеры окна
 
@@ -45,8 +46,8 @@ player_width = 50
 
 player_height = 30
 
-player_width2 = 70
-player_height2 = 100
+player_width2 = 150# ШИРИНА игрока
+player_height2 = 150# ВЫСОТА игрока
 
 # Создаем маску лабиринта
 
@@ -61,23 +62,34 @@ person_game1 = pygame.image.load("bat_costuims/bat-a.png")
 
 person_game1 = pygame.transform.scale(person_game1, (player_width, player_height))
 
-person_game2 = pygame.image.load("bat_costuims/dragon-a.png")
 
-person_game2 = pygame.transform.scale(person_game2,(player_width2,player_height))
+person_game1_x = 600
 
-person_game3 = pygame.image.load("bat_costuims/dragon-b.png")
+person_game1_y = 140
 
-person_game3 = pygame.transform.scale(person_game2,(player_width2,player_height2))
+number_of_dragon_x = 50
 
-person_game4 = pygame.image.load("bat_costuims/dragon-c.png")
+number_of_dragon_y = 755
 
-person_game4 = pygame.transform.scale(person_game4,(player_width2,player_height2))
-person_game1_x = 519
+dragon_frame = [
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-a.png"),(player_width2,player_height2)),
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-b.png"),(player_width2,player_height2)),
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-c.png"),(player_width2,player_height2)),
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-d.png"),(player_width2, player_height2)),
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-e.png"), (player_width2, player_height2)),
+]
+dragon_frame1 = [
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-f.png"),(player_width2,player_height2)),
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-g.png"),(player_width2,player_height2)),
+    pygame.transform.scale(pygame.image.load("bat_costuims/dragon-h.png"),(player_width2,player_height2)),
+]
+number_of_dragon = 0
+animation_spend = 100
+frame_count = 0
 
-person_game1_y = 995
 
 
-health = 3
+#health = 3
 # Кнопка
 
 button_play_rect = pygame.Rect(475, 455, 100, 50)
@@ -108,6 +120,8 @@ new_x, new_y = person_game1_x, person_game1_y
 # Основной игровой цикл
 while running:
     # Обработка событий
+    clock = pygame.time.Clock()
+    print(clock)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -160,13 +174,15 @@ while running:
             elif move_down:
                 new_y -= 3
 
-            health -= 1
+
+
+            #health -= 1
             new_x, new_y = person_game1_x, person_game1_y
-            print("Минус сердечко! Осталось", health, "сердце")
+            #print("Минус сердечко! Осталось", health, "сердце")
 
         else:
             person_game1_x, person_game1_y = new_x, new_y
-            print(person_game1_x, person_game1_y)
+            #print(person_game1_x, person_game1_y)
 
 
 
@@ -189,7 +205,28 @@ while running:
 
     elif numbers_of_screen == 3:
         screen.blit(labirint_level2, (0, 0))
-        screen.blit(person_game2,(500, 900))
+        screen.blit(dragon_frame [number_of_dragon],(number_of_dragon_x, number_of_dragon_y))
+        frame_count += 1
+        if frame_count > 100:
+            frame_count = 0
+        if frame_count == animation_spend:
+            number_of_dragon += 1
+            print (number_of_dragon)
+        if number_of_dragon > 4:
+            number_of_dragon = 0
+        if number_of_dragon_x < 730 and number_of_dragon_y > 100 :
+            number_of_dragon_x += 0.5
+            number_of_dragon_y -= 0.5
+        if number_of_dragon_x == 730 or number_of_dragon_y == 100:
+            number_of_dragon=0
+            screen.blit(dragon_frame1[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
+            frame_count += 1
+            if frame_count > 100:
+                frame_count = 0
+            if frame_count == animation_spend:
+                number_of_dragon += 1
+            if number_of_dragon > 2:
+                number_of_dragon = 0
     pygame.display.flip()
 
 # Завершаем Pygame
