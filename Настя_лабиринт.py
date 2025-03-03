@@ -231,3 +231,4 @@ while running:
 
 # Завершаем Pygame
 pygame.quit()# Завершаем Pygame
+#ДОБАВИЛА КОМЕНТАРИЙ
