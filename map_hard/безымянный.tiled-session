@@ -7,6 +7,9 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "test.tsx": {
+            "dynamicWrapping": false
+        }
     },
     "last.imagePath": "C:/Users/Администратор/PycharmProjects/Лабиринт_Настя_pygame/map_hard",
     "map.height": 32,
