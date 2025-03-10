@@ -1,11 +1,15 @@
 
 import pygame
 
-
+from map_python import load_tmx_map
 
 # Инициализация Pygame
 
 pygame.init()
+
+#Загружаем карту
+map_surface = load_tmx_map()
+
 
 #clock = pygame.time.Clock()
 #print(clock)
@@ -228,6 +232,7 @@ while running:
                 number_of_dragon += 1
             if number_of_dragon > 2:
                 number_of_dragon = 0
+            screen.blit(map_surface , (0,0))
 
     pygame.display.flip()
 
