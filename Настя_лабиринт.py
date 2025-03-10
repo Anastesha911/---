@@ -94,7 +94,7 @@ frame_count = 0
 
 button_play_rect = pygame.Rect(475, 455, 100, 50)
 
-
+#test_play_rect = pygame.Rect(0,0,1024,1024)
 
 # Основные цвета
 
@@ -193,6 +193,7 @@ while running:
         screen.blit(labirint, (0, 0))
         pygame.draw.rect(screen, (200, 200, 200), button_play_rect)
         screen.blit(button_play, button_play_rect.topleft)
+      #  pygame.draw.rect(screen,(200,200,200),test_play_rect)
 
     elif numbers_of_screen == 2:  # Лабиринт
         screen.blit(labirint_MY, (0, 0))
@@ -227,6 +228,7 @@ while running:
                 number_of_dragon += 1
             if number_of_dragon > 2:
                 number_of_dragon = 0
+
     pygame.display.flip()
 
 # Завершаем Pygame
