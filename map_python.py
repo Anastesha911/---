@@ -16,16 +16,17 @@ def load_tmx_map():
     #Проверяем все видимые слои карты
     for layer in tmx_data.visible_layers:
         #Проверяем слой на наличие тайлов
-        if isinstance(layer,pytmx.TiledTileLayes):
+        if isinstance(layer,pytmx.TiledTileLayer):
             #Проходим по каждому тайлу слоя
             for x in range(0,tmx_data.width):
                 for y in range (0,tmx_data.height):
                     #Получаем изображение на данной позиции
                     tile = tmx_data.get_tile_image(x,y,layer.id)
-                    #Усли тайл существует,рисуем его
+                    #Если тайл существует,рисуем его
                     if tile:
                         #Раситываем позицию тайла на карте
                         pos_x = x * tmx_data.tilewidth
                         pos_y = y * tmx_data.tileheight
                         #Размещаем тайл на карте
                         map_surface.blit(tile,(pos_x , pos_y))
+    return map_surface
