@@ -8,7 +8,7 @@ from map_python import load_tmx_map
 pygame.init()
 
 #Загружаем карту
-map_surface = load_tmx_map()
+#map_surface = load_tmx_map()
 
 
 #clock = pygame.time.Clock()
@@ -123,16 +123,24 @@ new_x, new_y = person_game1_x, person_game1_y
 
 # Основной игровой цикл
 while running:
-    # Обработка событий
+    #  ЭТАП 1  - Обработка событий
     clock = pygame.time.Clock()
-    print(clock)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        elif event.type == pygame.MOUSEBUTTONDOWN and numbers_of_screen == 1:
-            if button_play_rect.collidepoint(event.pos):
-                numbers_of_screen = 2
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if  numbers_of_screen == 1:
+                #if event.pos[0] >= 475 and event.pos[0] <= 575 and 455 <= event.pos[1] <= 505 :
+
+                if button_play_rect.collidepoint(event.pos):
+                    numbers_of_screen = 2
+            elif numbers_of_screen == 3:
+                #print(event.pos)
+                if 649  <= event.pos[0] <= 951 and 595 <= event.pos[1] <= 951:
+                    numbers_of_screen = 4
+
 
         elif numbers_of_screen == 2:
             if event.type == pygame.KEYDOWN:
@@ -155,7 +163,7 @@ while running:
                 elif event.key == pygame.K_DOWN:
                     move_down = False
                 #конец цикла for
-
+    #ЭТАП 2 - обновление переменных
     # Движение персонажа
     if numbers_of_screen == 2:
         if move_right:
@@ -189,7 +197,7 @@ while running:
             #print(person_game1_x, person_game1_y)
 
 
-
+    #ЭТАП 3 - отображение игрового процесса
     # Отрисовка экрана
     screen.fill(WHITE)
 
@@ -232,7 +240,9 @@ while running:
                 number_of_dragon += 1
             if number_of_dragon > 2:
                 number_of_dragon = 0
-            screen.blit(map_surface , (0,0))
+
+    elif numbers_of_screen == 4:
+        #screen.blit(map_surface , (0,0))
 
     pygame.display.flip()
 
