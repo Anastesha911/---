@@ -8,7 +8,6 @@ from map_python import load_tmx_map
 pygame.init()
 
 #Загружаем карту
-map_surface = load_tmx_map()
 
 
 #clock = pygame.time.Clock()
@@ -27,6 +26,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))#размеры �
 
 pygame.display.set_caption("Простой экран с Pygame")
 
+map_surface = load_tmx_map()
 
 
 # Загрузка изображений
@@ -143,6 +143,7 @@ while running:
 
 
         elif numbers_of_screen == 2:
+            #Проверяется нажата ли клавиша
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     move_up = True
@@ -152,7 +153,7 @@ while running:
                     move_left = True
                 elif event.key == pygame.K_RIGHT:
                     move_right = True
-
+                #Провряется была ли клавиша отпущена
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     move_right = False
@@ -243,6 +244,9 @@ while running:
 
     elif numbers_of_screen == 4:
         screen.blit(map_surface , (0,0))
+        person_game1_x = 500
+        person_game1_y = 500
+        screen.blit(person_game1,(person_game1_x,person_game1_y))
 
     pygame.display.flip()
 
