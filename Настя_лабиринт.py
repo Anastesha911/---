@@ -3,10 +3,15 @@ import pygame
 
 from map_python import load_tmx_map
 
+from person_tmx import Person#подключили скрипт
+
+
+
 # Инициализация Pygame
 
 pygame.init()
 
+Game_Player = Person(10,10,110,110)
 #Загружаем карту
 
 
@@ -247,7 +252,7 @@ while running:
         person_game1_x = 500
         person_game1_y = 500
         screen.blit(person_game1,(person_game1_x,person_game1_y))
-
+        Game_Player.draw_rect(screen)#подключили метод(draw_rect)
     pygame.display.flip()
 
 # Завершаем Pygame
