@@ -1,9 +1,9 @@
 
 import pygame
 
-from map_python import load_tmx_map
+#from map_python import load_tmx_map
 
-from person_tmx import Person#подключили скрипт
+#from person_tmx import Person#подключили скрипт
 
 
 
@@ -11,7 +11,7 @@ from person_tmx import Person#подключили скрипт
 
 pygame.init()
 
-Game_Player = Person(10,10,110,110)
+#Game_Player = Person(10,10,110,110)
 #Загружаем карту
 
 
@@ -31,7 +31,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))#размеры �
 
 pygame.display.set_caption("Простой экран с Pygame")
 
-map_surface = load_tmx_map()
+#map_surface = load_tmx_map()
 
 
 # Загрузка изображений
@@ -224,35 +224,38 @@ while running:
 
     elif numbers_of_screen == 3:
         screen.blit(labirint_level2, (0, 0))
-        screen.blit(dragon_frame [number_of_dragon],(number_of_dragon_x, number_of_dragon_y))
         frame_count += 1
-        if frame_count > 100:
+        if frame_count > animation_spend:
             frame_count = 0
         if frame_count == animation_spend:
+
             number_of_dragon += 1
             print (number_of_dragon)
-        if number_of_dragon > 4:
+        if number_of_dragon >= 4:
             number_of_dragon = 0
-        if number_of_dragon_x < 730 and number_of_dragon_y > 100 :
+        if number_of_dragon_x <= 715 and number_of_dragon_y >= 90 :
             number_of_dragon_x += 0.5
             number_of_dragon_y -= 0.5
-        if number_of_dragon_x == 730 or number_of_dragon_y == 100:
-            number_of_dragon=0
+            print(number_of_dragon_x, number_of_dragon_y)
+        if number_of_dragon_x >= 715 or number_of_dragon_y == 100:
             screen.blit(dragon_frame1[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
             frame_count += 1
             if frame_count > 100:
                 frame_count = 0
             if frame_count == animation_spend:
                 number_of_dragon += 1
-            if number_of_dragon > 2:
+            if number_of_dragon >= 2:
                 number_of_dragon = 0
+        else:
+            screen.blit(dragon_frame[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
+
 
     elif numbers_of_screen == 4:
-        screen.blit(map_surface , (0,0))
+        #screen.blit(map_surface , (0,0))
         person_game1_x = 500
         person_game1_y = 500
         screen.blit(person_game1,(person_game1_x,person_game1_y))
-        Game_Player.draw_rect(screen)#подключили метод(draw_rect)
+        #Game_Player.draw_rect(screen)#подключили метод(draw_rect)
     pygame.display.flip()
 
 # Завершаем Pygame
