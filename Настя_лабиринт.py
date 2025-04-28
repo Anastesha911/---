@@ -225,29 +225,24 @@ while running:
     elif numbers_of_screen == 3:
         screen.blit(labirint_level2, (0, 0))
         frame_count += 1
-        if frame_count > animation_spend:
-            frame_count = 0
-        if frame_count == animation_spend:
-
-            number_of_dragon += 1
-            print (number_of_dragon)
-        if number_of_dragon >= 4:
-            number_of_dragon = 0
         if number_of_dragon_x <= 715 and number_of_dragon_y >= 90 :
             number_of_dragon_x += 0.5
             number_of_dragon_y -= 0.5
-            print(number_of_dragon_x, number_of_dragon_y)
-        if number_of_dragon_x >= 715 or number_of_dragon_y == 100:
-            screen.blit(dragon_frame1[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
-            frame_count += 1
-            if frame_count > 100:
-                frame_count = 0
-            if frame_count == animation_spend:
-                number_of_dragon += 1
-            if number_of_dragon >= 2:
-                number_of_dragon = 0
-        else:
             screen.blit(dragon_frame[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
+            if frame_count >= animation_spend:
+                frame_count = 0
+                number_of_dragon += 1
+                if number_of_dragon >= len(dragon_frame):
+                    number_of_dragon = 0
+            else:
+                screen.blit(dragon_frame1[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
+                if frame_count >= animation_spend:
+                    frame_count = 0
+                    number_of_dragon += 1
+                    if number_of_dragon >= len(dragon_frame1):
+                        number_of_dragon = 0
+
+
 
 
     elif numbers_of_screen == 4:
