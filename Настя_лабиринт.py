@@ -1,5 +1,6 @@
 
 import pygame
+import time
 
 #from map_python import load_tmx_map
 
@@ -50,6 +51,7 @@ labirint_MY = pygame.image.load("Картинки_для_лабиринта/labi
 
 labirint_MY = pygame.transform.scale(labirint_MY, (screen_width, screen_height-12))#команда pygame.transform.scale - отвечает за изменение размеров картинки
 
+pictures_hard = pygame.image.load("картинки_усложнений/fire_hard_ball.png")
 
 player_width = 50
 
@@ -93,8 +95,15 @@ dragon_frame1 = [
     pygame.transform.scale(pygame.image.load("bat_costuims/dragon-h.png"),(player_width2,player_height2)),
 ]
 number_of_dragon = 0
+number_of_dragon1 = 0
 animation_spend = 100
 frame_count = 0
+
+pictures_hard_x = 450
+pictures_hard_y = 500
+
+a = 0
+b = 1
 
 
 
@@ -216,6 +225,15 @@ while running:
     elif numbers_of_screen == 2:  # Лабиринт
         screen.blit(labirint_MY, (0, 0))
         screen.blit(person_game1, (person_game1_x, person_game1_y))
+        screen.blit(pictures_hard, (pictures_hard_x, pictures_hard_y))
+        if 450 <= pictures_hard_x <= 550:
+            pictures_hard_x += 1
+            if pictures_hard_x == 550:
+                for i in range(100):
+                    pictures_hard_x -= 1
+
+
+
 
         # Проверка выхода из лабиринта
         if person_game1_x < 450 and person_game1_y < 10 and numbers_of_screen == 2:
@@ -229,18 +247,18 @@ while running:
             number_of_dragon_x += 0.5
             number_of_dragon_y -= 0.5
             screen.blit(dragon_frame[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
-            if frame_count >= animation_spend:
+            if frame_count == animation_spend:
                 frame_count = 0
                 number_of_dragon += 1
-                if number_of_dragon >= len(dragon_frame):
+                if number_of_dragon >= len(dragon_frame):#счётчик картинок дракона для переведения последней картинки на первую картинку
                     number_of_dragon = 0
-            else:
-                screen.blit(dragon_frame1[number_of_dragon], (number_of_dragon_x, number_of_dragon_y))
-                if frame_count >= animation_spend:
-                    frame_count = 0
-                    number_of_dragon += 1
-                    if number_of_dragon >= len(dragon_frame1):
-                        number_of_dragon = 0
+        else:
+            screen.blit(dragon_frame1[number_of_dragon1], (number_of_dragon_x, number_of_dragon_y))
+            if frame_count == animation_spend:
+                frame_count = 0
+                number_of_dragon1 += 1
+                if number_of_dragon1 >= len(dragon_frame1):
+                    number_of_dragon1 = 0
 
 
 
@@ -250,6 +268,7 @@ while running:
         person_game1_x = 500
         person_game1_y = 500
         screen.blit(person_game1,(person_game1_x,person_game1_y))
+
         #Game_Player.draw_rect(screen)#подключили метод(draw_rect)
     pygame.display.flip()
 
